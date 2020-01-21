@@ -1,4 +1,6 @@
-# myapp
+# First project with Vue.
+
+I extended [this tutorial](https://www.taniarascia.com/getting-started-with-vue/) to use Vuex, vue-router and Typescript for learning purpose.
 
 ## Project setup
 ```
