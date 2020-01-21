@@ -35,6 +35,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { User } from "@/types/User";
+import { EmployeeTableState } from "../types/EmployeeTableState";
+import { Store } from "vuex";
 
 export default Vue.extend({
   name: "employee-table",
@@ -47,7 +49,11 @@ export default Vue.extend({
       cachedEmployee: { id: 0, name: "", email: "" }
     };
   },
+
   methods: {
+    store(): Store<EmployeeTableState> {
+      return this.$store;
+    },
     editMode(employee: User) {
       this.cachedEmployee = Object.assign({}, employee);
       this.editing = employee.id;
@@ -58,11 +64,14 @@ export default Vue.extend({
     },
     editEmployee(employee: User) {
       if (employee.name === "" || employee.email === "") return;
-      this.$emit("edit:employee", employee.id, employee);
+      this.store().dispatch("editEmployeeAsync", {
+        id: employee.id,
+        u: employee
+      });
       this.editing = -1;
     },
-    deleteEmployee(id: Number) {
-      this.$emit("delete:employee", id);
+    deleteEmployee(id: number) {
+      this.store().dispatch("deleteAsync", id);
     }
   }
 });

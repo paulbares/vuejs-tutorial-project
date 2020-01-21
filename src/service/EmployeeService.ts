@@ -2,17 +2,20 @@ import axios from "axios";
 import { User } from "@/types/User";
 
 export class EmployeeService {
+    readonly url: string;
     constructor(url: string) {
+        this.url = url;
     }
-    public async getEmployees(): Promise<User[]> {
+
+    async getEmployees(): Promise<User[]> {
         return await axios
-            .get("https://jsonplaceholder.typicode.com/users")
+            .get(this.url)
             .then(r => r.data);
     };
 
-    public addEmployee(e: User): Promise<User> {
+    async addEmployee(e: User): Promise<User> {
         return axios
-            .post("https://jsonplaceholder.typicode.com/users", {
+            .post(this.url, {
                 name: e.name,
                 email: e.email
             })
@@ -23,5 +26,18 @@ export class EmployeeService {
             .catch(function (error) {
                 console.log(error);
             }) as Promise<any>;
+    }
+
+    async editEmployee(id: number, updatedEmployee: User): Promise<User> {
+        return axios
+            .put(
+                `${this.url}/${id}`,
+                updatedEmployee
+            )
+            .then(r => r.data)
+    }
+
+    async deleteEmployee(id: number): Promise<void> {
+        return axios.delete(`${this.url}/${id}`);
     }
 }

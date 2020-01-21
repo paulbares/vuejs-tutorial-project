@@ -25,7 +25,6 @@
 </template>
 
 <script lang="ts">
-// import Component from "vue-class-component";
 import Vue from "vue";
 import { User } from "@/types/User";
 
@@ -52,7 +51,7 @@ export default Vue.extend({
         return;
       }
 
-      this.$emit("add:employee", this.employee);
+      this.$store.dispatch("addEmployeeAsync", this.employee);
       (this.$refs.first as HTMLFormElement).focus();
       this.employee = {
         name: "",
